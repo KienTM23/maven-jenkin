@@ -8,6 +8,8 @@
 <!--            <class name="com.techpanda.account.Level_04_Multiple_Browser"/>-->
 <!--        </classes>-->
 <!--    </test>-->
+<!--    <parameter name="server" value="live"></parameter>-->
+    <parameter name="role" value="user"></parameter>
     <listeners>
         <listener class-name="commons.MethodListener"/>
 <!--        <listener class-name="reportConfig.ReportNGListener"/>-->
@@ -19,9 +21,7 @@
     <test name="Run on CHROME browser">
         <parameter name="browser" value="chrome"/>
         <classes>
-            <class name="com.techpanda.cookie.Common_Login"/>
-            <class name="com.techpanda.cookie.Payment_01_Order_A_Product"/>
-            <class name="com.techpanda.cookie.Payment_02_Checkout"/>
+            <class name="com.techpanda.account.Level_24_Data_Json"/>
         </classes>
     </test>
 

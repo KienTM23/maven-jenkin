@@ -12,7 +12,7 @@ public class AccountData {
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            return mapper.readValue(new File(GlobalConstants.DATA_PATH + "dataTest/Account.json"), AccountData.class);
+            return mapper.readValue(new File(GlobalConstants.DATA_PATH + "/Account.json"), AccountData.class);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

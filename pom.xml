@@ -143,6 +143,12 @@
             <artifactId>javafaker</artifactId>
             <version>1.0.2</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.aeonbits.owner/owner -->
+        <dependency>
+            <groupId>org.aeonbits.owner</groupId>
+            <artifactId>owner</artifactId>
+            <version>1.0.10</version>
+        </dependency>
 
     </dependencies>
 
@@ -169,7 +175,7 @@
                 <configuration>
                     <!-- Run TestNG xml file -->
                     <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/runSoucelabTestcases.xml</suiteXmlFile>
+                        <suiteXmlFile>src/test/resources/runTechPandaTestcases.xml</suiteXmlFile>
                     </suiteXmlFiles>
 
                     <!-- Argument -->

@@ -114,6 +114,99 @@ public class BaseTest {
         return driver;
     }
 
+    protected WebDriver getBrowserDriver(String browserName, String serverName, String roleName) {
+        BrowserList browserList = BrowserList.valueOf(browserName.toUpperCase());
+
+        switch (browserList) {
+            case FIREFOX:
+//                System.setProperty(FirefoxDriver.SystemProperty.DRIVER_USE_MARIONETTE,"true");
+                driver = (WebDriverManager.firefoxdriver().create());
+                break;
+            case FIREFOX_HEADLESS:
+                WebDriverManager.firefoxdriver().setup();
+                FirefoxOptions options = new FirefoxOptions();
+                options.addArguments("-headless");
+                options.addArguments("window-size=1920x1080");
+                driver = (new FirefoxDriver(options));
+//                FirefoxOptions options = new FirefoxOptions();
+//                options.addArguments("-headless");
+//                driver = WebDriverManager.firefoxdriver().capabilities(options).create();
+                break;
+            case CHROME:
+                System.setProperty("webdriver.chrome.args", "--disable-logging");
+                System.setProperty("webdriver.chrome.silentOutput", "true");
+                File chromeTranslateFile = new File(projectPath + "\\browserExtensions\\google_translate.crx");
+                ChromeOptions chromeOptionFile = new ChromeOptions();
+//                chromeOptionFile.addExtensions(chromeTranslateFile);
+//                chromeOptionFile.addArguments("--lang=vi");
+                chromeOptionFile.setExperimentalOption("useAutomationExtension", false);
+                chromeOptionFile.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));
+
+                Map<String, Object> prefs = new HashMap<String, Object>();
+                prefs.put("credentials_enable_service", false);
+                prefs.put("profile.password_manager_enabled", false);
+                chromeOptionFile.setExperimentalOption("prefs", prefs);
+                driver = (WebDriverManager.chromedriver().create());
+                break;
+            case CHROME_HEADLESS:
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--headless");
+                chromeOptions.addArguments("window-size=1920x1080");
+                driver = (WebDriverManager.chromedriver().capabilities(chromeOptions).create());
+                break;
+            case EDGE:
+                driver = (WebDriverManager.edgedriver().create());
+                break;
+            default:
+                throw new RuntimeException("Browser name is not valid!");
+        }
+
+        driver.get(getAppUrlByRoleName(serverName, roleName));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(GlobalConstants.LONG_TIMEOUT));
+        return driver;
+    }
+
+    private String getAppUrlByRoleName(String serverName, String roleName) {
+        if (roleName.toLowerCase().equals("user")) {
+            return getUserAppUrlByServerName(serverName);
+        } else {
+            return getAdminAppUrlByServerName(serverName);
+        }
+    }
+
+    private String getUserAppUrlByServerName(String serverName) {
+        ServerList serverList = ServerList.valueOf(serverName.toUpperCase());
+        switch (serverList) {
+            case DEV:
+                return GlobalConstants.DEV_USER_URL;
+            case TESTING:
+                return GlobalConstants.TEST_USER_URL;
+            case STAGING:
+                return GlobalConstants.STAGING_USER_URL;
+            case LIVE:
+                return GlobalConstants.LIVE_USER_URL;
+            default:
+                throw new RuntimeException("Server name is not valid!");
+        }
+    }
+
+    private String getAdminAppUrlByServerName(String serverName) {
+        ServerList serverList = ServerList.valueOf(serverName.toUpperCase());
+        switch (serverList) {
+            case DEV:
+                return GlobalConstants.DEV_ADMIN_URL;
+            case TESTING:
+                return GlobalConstants.TEST_ADMIN_URL;
+            case STAGING:
+                return GlobalConstants.STAGING_ADMIN_URL;
+            case LIVE:
+                return GlobalConstants.LIVE_ADMIN_URL;
+            default:
+                throw new RuntimeException("Server name is not valid!");
+        }
+    }
+
+
     protected boolean verifyTrue(boolean condition) {
         boolean status = true;
         try {
